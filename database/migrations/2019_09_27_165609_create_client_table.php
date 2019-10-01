@@ -15,8 +15,8 @@ class CreateClientTable extends Migration
     {
         Schema::create('client', function(Blueprint $table){
             $table->bigIncrements('id');
-            $table->string('name', 100);
-            $table->string('lastname', 100);
+            $table->string('name', 255);
+            $table->string('lastname', 255);
             $table->string('cpf', 11);
             $table->string('rg', 14);
         });
@@ -29,6 +29,6 @@ class CreateClientTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('client');
     }
 }

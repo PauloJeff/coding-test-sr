@@ -15,10 +15,14 @@ class CreateEmployeeTable extends Migration
     {
         Schema::create('employee', function(Blueprint $table){
             $table->bigIncrements('id');
-            $table->string('name', 100);
-            $table->string('lastname', 100);
+            $table->string('name', 255);
+            $table->string('lastname', 255);
+            $table->string('email', 255)->unique();
+            $table->string('password');
             $table->string('cpf', 11);
             $table->string('rg', 14);
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +33,6 @@ class CreateEmployeeTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('employee');
     }
 }

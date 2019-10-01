@@ -15,8 +15,8 @@ class CreateProductTable extends Migration
     {
         Schema::create('product', function(Blueprint $table){
             $table->bigIncrements('id');
-            $table->string('name', 100);
-            $table->string('cod_product', 100);
+            $table->string('name', 255);
+            $table->string('cod_product', 255);
             $table->double('pric', 8, 2);
         });
     }
@@ -28,6 +28,6 @@ class CreateProductTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('product');
     }
 }
