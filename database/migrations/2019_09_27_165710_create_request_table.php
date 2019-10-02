@@ -17,6 +17,8 @@ class CreateRequestTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('client');
+            $table->string('code_request');
+            $table->unsignedBigInteger('status');
             $table->timestamp('date_request');
         });
     }
