@@ -85,10 +85,7 @@ class AuthController extends Controller
                     'message' => 'Não autorizado'
                 ], 401);
             }
-
-            var_dump($request);
-            die;
-            $employee = $request->employee();
+            $employee = $request->user();
 
             $tokenResult = $employee->createToken('Personal Access Token');
             $token = $tokenResult->token;
@@ -120,7 +117,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->employee()->token()->revoke();
+        try{
+            $request->user()->token()->revoke();
+        } catch(Exception $e)
+        {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 501);
+        }
 
         return response()->json([
             'message' => 'Você foi deslogado'
@@ -134,6 +138,6 @@ class AuthController extends Controller
      */
     public function logged(Request $request)
     {
-        return response()->json($request->employee());
+        return response()->json($request->user());
     }
 }

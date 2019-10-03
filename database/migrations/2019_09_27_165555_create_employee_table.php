@@ -15,6 +15,8 @@ class CreateEmployeeTable extends Migration
     {
         Schema::create('employee', function(Blueprint $table){
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
             $table->string('name', 255);
             $table->string('lastname', 255);
             $table->string('email', 255)->unique();

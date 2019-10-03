@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Employee extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use Notifiable, HasApiTokens;
 
     protected $table = 'employee';
     public $timestamps = false;
@@ -23,4 +23,9 @@ class Employee extends Authenticatable
     protected $hidden = [
         'password', 'remember_token'
     ];
+
+    public function store()
+    {
+        return $this->hasOne('App\Store');
+    }
 }
