@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class StoreTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(StoreTableSeeder::class);
-        $this->call(EmployeeTableSeeder::class);
+        DB::table('store')->insert([
+            'name' => 'Loja São Paulo'
+        ]);
     }
 }

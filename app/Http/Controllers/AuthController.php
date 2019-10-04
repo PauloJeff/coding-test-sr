@@ -9,11 +9,12 @@ use Carbon\Carbon;
 use App\Employee;
 use App\Mail\SendWelcomeMailable;
 use Exception;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
     /**
-     * Create Employee
+     * Criação de funcionários
      * 
      * @param [string] name
      * @param [string] lastname
@@ -28,6 +29,7 @@ class AuthController extends Controller
     {
         try{
             $request->validate([
+                'store_id' => 'required|exists:store,id',
                 'name' => 'required|string',
                 'lastname' => 'required|string',
                 'email' => 'required|string|email|unique:employee',
@@ -37,6 +39,7 @@ class AuthController extends Controller
             ]);
     
             $employee = new Employee([
+                'store_id' => $request->store_id,
                 'name' => $request->name,
                 'lastname' => $request->lastname,
                 'email' => $request->email,

@@ -10,11 +10,16 @@ class Stock extends Model
     public $timestamps = false;
 
     protected $fillables = [
-        'product_id', 'qtd_prod'
+        'product_id', 'qtd_prod', 'store_id'
     ];
 
     public function product()
     {
         return $this->hasOne('App\Product');
+    }
+
+    public function store()
+    {
+        return $this->hasOne('App\Stock');
     }
 }

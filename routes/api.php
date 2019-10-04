@@ -22,3 +22,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('logged', 'AuthController@logged');
     });
 });
+
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::post('product', 'ProductController@addProduct');
+    Route::post('product/{id}', 'ProductController@updateProduct');
+});

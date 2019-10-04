@@ -10,7 +10,7 @@ class Product extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'cod_product', 'pric'
+        'name', 'code_product', 'description', 'attributes', 'price'
     ];
 
     protected $guard = [];

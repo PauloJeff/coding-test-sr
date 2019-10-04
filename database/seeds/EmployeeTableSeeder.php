@@ -13,6 +13,7 @@ class EmployeeTableSeeder extends Seeder
     public function run()
     {
         DB::table('employee')->insert([
+            'store_id' => 1,
             'name' => 'Paulo Jefferson',
             'lastname' => 'Mendes Oliveira',
             'email' => 'paul_jeff@outlook.com',
