@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+class DemandItem extends Model
 {
-    protected $table = 'order_item';
+    protected $table = 'demand_item';
     protected $timestamps = false;
 
     protected $fillables = [

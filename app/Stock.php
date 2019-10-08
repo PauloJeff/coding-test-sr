@@ -13,6 +13,8 @@ class Stock extends Model
         'product_id', 'qtd_prod', 'store_id'
     ];
 
+    protected $guarded = [];
+
     public function product()
     {
         return $this->hasOne('App\Product');

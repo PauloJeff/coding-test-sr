@@ -14,4 +14,20 @@ class Product extends Model
     ];
 
     protected $guard = [];
+
+    public function stock()
+    {
+        return $this->hasMany('App\Stock');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($model){
+            if($model->forceDeleting) {
+                $model->roles()->detach();
+            }
+        });
+    }
 }

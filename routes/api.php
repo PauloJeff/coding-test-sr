@@ -26,4 +26,8 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('product', 'ProductController@addProduct');
     Route::post('product/{id}', 'ProductController@updateProduct');
+    Route::get('product', 'ProductController@getProducts');
+    Route::get('delete/{id}', 'ProductController@delete');
+
+    Route::post('demand', 'DemandController@addDemand');
 });
