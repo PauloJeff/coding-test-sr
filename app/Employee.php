@@ -26,6 +26,6 @@ class Employee extends Authenticatable
 
     public function store()
     {
-        return $this->hasOne('App\Store');
+        return $this->belongsTo('App\Store');
     }
 }

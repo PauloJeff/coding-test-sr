@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StatusOrder extends Model
+class StatusDemand extends Model
 {
-    protected $table = 'status_order';
+    protected $table = 'status_demand';
     public $timestamps = false;
 
     protected $fillables = [

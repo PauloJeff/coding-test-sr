@@ -7,21 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class DemandItem extends Model
 {
     protected $table = 'demand_item';
-    protected $timestamps = false;
+    public $timestamps = false;
 
-    protected $fillables = [
-        'request_id', 'product_id',
+    protected $fillable = [
+        'demand_id', 'product_id', 'qtd_item'
     ];
 
     protected $guard = [];
 
     public function request()
     {
-        return belongsTo('App\Request');
+        return $this->belongsTo('App\Request');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
     }
 
     public function client()
     {
-        return belongsTo('App\Client');
+        return $this->belongsTo('App\Client');
     }
 }

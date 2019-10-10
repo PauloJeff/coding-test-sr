@@ -17,7 +17,7 @@ class Product extends Model
 
     public function stock()
     {
-        return $this->hasMany('App\Stock');
+        return $this->hasMany('App\Stock', 'product_id');
     }
 
     protected static function boot()

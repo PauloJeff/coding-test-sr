@@ -9,24 +9,29 @@ class Demand extends Model
     protected $table = 'demand';
     public $timestamps = false;
 
-    protected $fillables = [
-        'client_id'
+    protected $fillable = [
+        'client_id', 'code_demand', 'status', 'freight_price', 'store_id'
     ];
 
     protected $guard = [];
 
     public function client()
     {
-        return $this->hasOne('App\Client');
+        return $this->belongsTo('App\Client');
     }
 
-    public function status()
+    public function demandItem()
     {
-        return $this->hasOne('App\StatusOrder');
+        return $this->hasMany('App\DemandItem', 'demand_id');
+    }
+
+    public function statusDemand()
+    {
+        return $this->hasOne('App\StatusDemand', 'id', 'status');
     }
 
     public function store()
     {
-        return $this->hasOne('App\Store');
+        return $this->belongsTo('App\Store');
     }
 }

@@ -22,6 +22,6 @@ class Stock extends Model
 
     public function store()
     {
-        return $this->hasOne('App\Stock');
+        return $this->belongsTo('App\Store');
     }
 }

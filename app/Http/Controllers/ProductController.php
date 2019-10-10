@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\DemandItem;
 use App\Product;
 use App\Stock;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -24,7 +26,7 @@ class ProductController extends Controller
         try{
             $request->validate([
                 'name' => 'required|string',
-                'code_product' => 'required|string',
+                'code_product' => 'required|string|unique:product',
                 'description' => 'required|string',
                 'attribute' => 'required|string',
                 'price' => 'required|numeric',
@@ -75,18 +77,17 @@ class ProductController extends Controller
      * @param [double] price
      * @param [array] stock
      */
-    public function updateProduct(Request $request, $id)
+    public function updateProduct(Request $request, Product $product)
     {
         try{
             $request->validate([
                 'name' => 'nullable',
-                'code_product' => 'nullable',
+                'code_product' => 'nullable|unique:product',
                 'description' => 'nullable',
                 'attributes' => 'nullable',
                 'price' => 'nullable',
             ]);
 
-            $product = Product::find($id);
             $product->update($request->only(['name', 'code_product', 'description', 'attibutes', 'price']));
         } catch(Exception $e)
         {
@@ -108,15 +109,34 @@ class ProductController extends Controller
     public function getProducts()
     {
         $products = Product::all();
-        return $products;
+        $data = [];
+        foreach($products as $i => $value)
+        {
+            $data[] = [
+                'name' => $value->name,
+                'code_product' => $value->code_product,
+                'description' => $value->description,
+                'attributes' => $value->attributes,
+                'price' => 'R$' . number_format($value->price, 2, ',', '.'),
+            ];
+
+            foreach($value->stock as $index => $stock)
+            {
+                $data[$i]['stock'][] = [
+                    'store' => $stock->store->name,
+                    'qtd_prod' => $stock->qtd_prod
+                ];
+            }
+        }
+
+        return $data;
     }
 
     /**
      * Deletar produtos
      */
-    public function delete($id)
+    public function delete(Product $product)
     {
-        $product = Product::find($id);
         $product->stock()->delete();
         $product->delete();
 
@@ -125,18 +145,59 @@ class ProductController extends Controller
         ], 201);
     }
 
-    public function subStock($store_id, $product_id, $qtd)
+    /**
+     * Produtos com baixo estoque
+     * 
+     * @return [json] $products
+     */
+    public function getProductsLowStock()
     {
-        try{
-            $stock = Stock::where('product_id', $product_id)
-                ->where('store_id', $store_id);
-            $stock->qtd_prod = $stock->qtd_prod - $qtd;
-            $stock->update();
-        } catch(Exception $e)
+        $products = Product::join('stock', 'product_id', '=', 'product.id')
+            ->where('stock.qtd_prod', '<', 3)
+            ->get();
+
+        $data = [];
+        foreach($products as $i => $value)
         {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 500);
+            $data[] = [
+                'name' => $value->name,
+                'code_product' => $value->code_product,
+                'description' => $value->description,
+                'attributes' => $value->attributes,
+                'price' => 'R$' . number_format($value->price, 2, ',', '.'),
+            ];
+
+            foreach($value->stock as $index => $stock)
+            {
+                $data[$i]['stock'][] = [
+                    'store' => $stock->store->name,
+                    'qtd_prod' => $stock->qtd_prod
+                ];
+            }
         }
+
+        return $data;
+    }
+
+    /**
+     * Produtos mais vendidos
+     * 
+     * @return [json] $products
+     */
+    public function bestSeller()
+    {
+        $itens = DemandItem::all();
+        
+        $countItem = [];
+        foreach($itens as $i => $item)
+        {
+            if(!isset($countItem[$item->id]))
+            {
+                $countItem[$item->id] = 0;
+            }
+            $countItem[$item->id] += $item->qtd_item;
+        }
+        
+        return $countItem;
     }
 }
