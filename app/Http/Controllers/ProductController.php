@@ -195,9 +195,27 @@ class ProductController extends Controller
             {
                 $countItem[$item->id] = 0;
             }
-            $countItem[$item->id] += $item->qtd_item;
+            $countItem[$item->id] = [
+                'name' => $item->product->name,
+                'qtd_sale' => $countItem[$item->id] + $item->qtd_item
+            ];
         }
-        
-        return $countItem;
+
+        $countItem[3] = [
+            'name' => 'Bagaceira',
+            'qtd_sale' => 10
+        ];
+
+        $countItem[4] = [
+            'name' => 'Bagaceira',
+            'qtd_sale' => 20
+        ];
+
+        usort($countItem, function($a, $b) {
+            return $b['qtd_sale'] <=> $a['qtd_sale'];
+        });
+        $bestSellers = array_slice($countItem, 0, 3);
+
+        return $bestSellers;
     }
 }

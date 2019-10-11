@@ -175,4 +175,22 @@ class DemandController extends Controller
 
         return true;
     }
+
+    public function averageTicket()
+    {
+        $totalSale = 0;
+        $totalDemand = 0;
+
+        $demands = Demand::where('status', '!=', '4')->get();
+        foreach($demands as $i => $demand)
+        {
+            $totalDemand++;
+            foreach($demand->demandItem as $index => $item)
+            {
+                $totalSale += $item->product->price;
+            }
+        }
+
+        return ['average_ticket' => $totalSale/$totalDemand];
+    }
 }

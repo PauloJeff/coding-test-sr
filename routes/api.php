@@ -30,10 +30,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('product', 'ProductController@getProducts');
     Route::get('product/delete/{product}', 'ProductController@delete');
     Route::get('product/stockLow', 'ProductController@getProductsLowStock');
-    Route::get('product/bestSeller', 'ProductController@bestSeller');
+    Route::get('bestSeller', 'ProductController@bestSeller');
 
     Route::post('demand', 'DemandController@addDemand');
     Route::post('demand/{demand}', 'DemandController@updateDemand');
     Route::get('demand/cancel/{demand}', 'DemandController@cancelDemand');
     Route::get('demand', 'DemandController@demand');
+    Route::get('averageTicket', 'DemandController@averageTicket');
 });
